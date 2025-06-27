@@ -1,4 +1,4 @@
-# ✅ Validate Token Microservice – Domain: users-auth
+# ✅ Validate Token Microservice – Domain: users-auth.
 
 Este microservicio verifica la validez de un token JWT y retorna información del usuario si es válido.
 
