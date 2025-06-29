@@ -1,4 +1,4 @@
-# 🔐 Users Auth Domain – Microservices Architecture.
+# 🔐 Users Auth Domain – Microservices Architecture..
 
 Este dominio forma parte del sistema de autenticación basado en microservicios. Agrupa y coordina los siguientes servicios:
 
