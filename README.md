@@ -86,6 +86,13 @@ Cada microservicio contiene su propio código fuente, dependencias, configuraci�
 Cada microservicio puede ejecutarse y desplegarse de forma independiente, ya sea localmente o en contenedores Docker. Consulta el README de cada microservicio para instrucciones detalladas.
 
 ---
+:
+
+🐳 Despliegue con Docker Compose
+Para levantar todos los microservicios del dominio users-auth junto con la base de datos, utiliza Docker Compose.
+Esto permite iniciar y gestionar todos los servicios con un solo comando, facilitando el desarrollo y despliegue local o en servidores.
+
+docker-compose up --build
 
 ## 📚 Notas
 
