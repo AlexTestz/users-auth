@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Paso 1: Checkout del código#
+    # Paso 1: Checkout del código
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -37,15 +37,19 @@ jobs:
         docker push alexmpz/login-user-service:qa
         docker push alexmpz/register-user-service:qa
 
-    # Paso 5: Conectar a la instancia EC2 usando IP elástica y desplegar los contenedores.
+    # Paso 5: Conectar a la instancia EC2 usando IP elástica y desplegar los contenedores
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v0.1.8
       with:
-        host: ${{ secrets.EC2_HOSTT }}  # Usar la IP elástica de EC2 aquí
+        host: ${{ secrets.EC2_HOST }}  # Usar la IP elástica de EC2 aquí
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
+          # Detener y eliminar contenedores antiguos si existen
+          docker stop $(docker ps -aq)
+          docker rm $(docker ps -aq)
+          
           # Descargar las imágenes desde Docker Hub
           docker pull alexmpz/change-password-service:qa
           docker pull alexmpz/validate-token-service:qa
