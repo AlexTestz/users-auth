@@ -1,24 +1,98 @@
-name: Deploy Users Auth QA
+name: Build and Deploy to EC2
 
 on:
-  push:
+  pull_request:
     branches:
-      - test  # Cuando se haga push a la rama QA, se activará este flujo de trabajo
+      - production
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest  # El flujo de trabajo corre en un runner Ubuntu de GitHub Actions
+  build_and_deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Desplegar a EC2 via SSH
-        uses: appleboy/ssh-action@v1.0.0  # Usa una acción de GitHub para SSH
-        with:
-          host: ${{ secrets.EC2_HOST }}  # Obtiene la IP pública de EC2 desde los secretos
-          username: ubuntu  # El usuario predeterminado en las instancias EC2 (para Ubuntu)
-          key: ${{ secrets.EC2_SSH_KEY }}  # La clave privada SSH almacenada en los secretos
-          script: |
-            cd ~/users-auth  # Se asegura de estar en el directorio correcto en EC2
-            git pull origin QA # Trae los últimos cambios de la rama QA
-            sudo docker-compose pull  # Baja las últimas imágenes de Docker
-            sudo docker-compose down  # Detiene y elimina los contenedores previos
-            sudo docker-compose up -d  # Levanta los contenedores en segundo plano
+    # Paso 1: Checkout del código.
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Paso 2: Configurar Docker
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # Paso 3: Iniciar sesión en Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Paso 4: Construir y subir las imágenes Docker
+    - name: Build and push Docker images
+      run: |
+        docker build -t alexmpz/change-password-service:qa ./change-password
+        docker build -t alexmpz/validate-token-service:qa ./validate-token
+        docker build -t alexmpz/login-user-service:qa ./login-user
+        docker build -t alexmpz/register-user-service:qa ./register-user
+        docker push alexmpz/change-password-service:qa
+        docker push alexmpz/validate-token-service:qa
+        docker push alexmpz/login-user-service:qa
+        docker push alexmpz/register-user-service:qa
+
+    # Paso 5: Conectar a la instancia EC2 usando IP elástica y desplegar los contenedores
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: ${{ secrets.EC2_HOSTT }}  # Usar la IP elástica de EC2 aquí
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        port: 22
+        script: |
+          # Detener y eliminar contenedores antiguos si existen
+          docker stop $(docker ps -aq)
+          docker rm $(docker ps -aq)
+          
+          # Descargar las imágenes desde Docker Hub
+          docker pull alexmpz/change-password-service:qa
+          docker pull alexmpz/validate-token-service:qa
+          docker pull alexmpz/login-user-service:qa
+          docker pull alexmpz/register-user-service:qa
+          
+          # Ejecutar los contenedores en los puertos específicos, pasando las variables de entorno
+          docker run -d -p 3009:3009 \
+            -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e DB_NAME=${{ secrets.DB_NAME }} \
+            -e DB_USER=${{ secrets.DB_USER }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }} \
+            alexmpz/change-password-service:qa
+          
+          docker run -d -p 3007:3007 \
+            -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e DB_NAME=${{ secrets.DB_NAME }} \
+            -e DB_USER=${{ secrets.DB_USER }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }} \
+            alexmpz/login-user-service:qa
+          
+          docker run -d -p 3006:3006 \
+            -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e DB_NAME=${{ secrets.DB_NAME }} \
+            -e DB_USER=${{ secrets.DB_USER }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }} \
+            alexmpz/register-user-service:qa
+          
+          docker run -d -p 3008:3008 \
+            -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e DB_NAME=${{ secrets.DB_NAME }} \
+            -e DB_USER=${{ secrets.DB_USER }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }} \
+            alexmpz/validate-token-service:qa
