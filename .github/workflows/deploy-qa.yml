@@ -53,7 +53,7 @@ jobs:
           docker pull alexmpz/register-user-service:qa
           
           # Ejecutar los contenedores en los puertos específicos
-          docker run -d -p 3009:3009 alexmpz/change-password-service:qaa
+          docker run -d -p 3009:3009 alexmpz/change-password-service:qa
           docker run -d -p 3007:3007 alexmpz/login-user-service:qa
           docker run -d -p 3006:3006 alexmpz/register-user-service:qa
           docker run -d -p 3008:3008 alexmpz/validate-token-service:qa
