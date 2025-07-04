@@ -37,7 +37,7 @@ jobs:
         docker push alexmpz/login-user-service:qa
         docker push alexmpz/register-user-service:qa
 
-    # Paso 5: Conectar a la instancia EC2 usando IP elástica y desplegar los contenedores
+    # Paso 5: Conectar a la instancia EC2 usando IP elástica y desplegar los contenedores.
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v0.1.8
       with:
