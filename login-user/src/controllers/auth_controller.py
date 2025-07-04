@@ -11,7 +11,7 @@ def login_user(credentials: LoginRequest):
         conn = get_connection()
         cur = conn.cursor()
 
-        # Buscar usuario por email o username
+        # search for user by email or username
         cur.execute("""
             SELECT id, username, email, password, role 
             FROM users 
@@ -21,13 +21,13 @@ def login_user(credentials: LoginRequest):
         user = cur.fetchone()
 
         if user is None:
-            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+            raise HTTPException(status_code=404, detail="User not found")
 
         if not bcrypt.checkpw(credentials.password.encode('utf-8'), user["password"].encode('utf-8')):
-            raise HTTPException(status_code=401, detail="Contraseña incorrecta")
+            raise HTTPException(status_code=401, detail="Incorrect password")
 
         if user["role"] != "admin":
-            raise HTTPException(status_code=403, detail="No tienes permiso para iniciar sesión")
+            raise HTTPException(status_code=403, detail="You do not have permission to log in.")
 
         token_data = {
             "sub": str(user["id"]),
@@ -38,7 +38,7 @@ def login_user(credentials: LoginRequest):
 
         access_token = create_access_token(token_data)
 
-        # ✅ Retornamos también el user_id
+        # ✅ We also return the user_id
         return {
             "access_token": access_token,
             "token_type": "bearer",
@@ -49,4 +49,4 @@ def login_user(credentials: LoginRequest):
         raise
     except Exception as e:
         print("❌ Login error:", e)
-        raise HTTPException(status_code=500, detail="Error interno en el servidor durante el login")
+        raise HTTPException(status_code=500, detail="Internal server error during login")

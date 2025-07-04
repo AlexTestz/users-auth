@@ -23,18 +23,19 @@ def create_user_in_db(user: UserCreate):
         conn = get_connection()
         cur = conn.cursor()
 
-        # Verificar si el email o username ya existen
+        # Verify existence of email or username
         cur.execute("SELECT id FROM users WHERE email = %s OR username = %s", (user.email, user.username))
         if cur.fetchone():
             raise HTTPException(status_code=409, detail="User with this email or username already exists")
 
-        # ✅ Validar fortaleza de la contraseña
+        # ✅ validate password strength
         validate_password_strength(user.password)
 
-        # Hashear la contraseña
+        # Hashear password
         hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        # Insertar el usuario
+        # Insert user into the database
+        
         cur.execute("""
             INSERT INTO users (username, email, password, role)
             VALUES (%s, %s, %s, %s)

@@ -5,7 +5,7 @@ import httpx
 from src.config.config import get_env
 from src.schemas.user_schema import ChangePasswordRequest
 from src.controllers.users_controller import change_password
-from src.dependencies import get_current_user  # ⚠️ Este archivo se muestra abajo
+from src.dependencies import get_current_user  # Assuming this is defined in your dependencies module
 
 router = APIRouter(prefix="/api/users", tags=["Users"])
 

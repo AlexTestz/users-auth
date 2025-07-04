@@ -2,11 +2,11 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 
-# Carga las variables del archivo .env ubicado en el root del proyecto
+# Load the variables from the .env file located in the project root
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(dotenv_path=BASE_DIR / ".env")
 
-# Configuración del entorno
+# Environment configuration
 class Settings:
     DB_HOST = os.getenv("DB_HOST")
     DB_PORT = os.getenv("DB_PORT")
@@ -18,7 +18,7 @@ class Settings:
 
 settings = Settings()
 
-# Función auxiliar para obtener una variable de entorno específica
+# Auxiliary function to obtain a specific environment variable
 def get_env(key: str) -> str:
     value = os.getenv(key)
     if value is None:

@@ -16,5 +16,5 @@ def get_connection():
         )
         return conn
     except Exception as e:
-        print("❌ Error de conexión a la base de datos:", e)
+        print("❌ Database connection error:", e)
         raise

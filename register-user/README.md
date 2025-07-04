@@ -1,57 +1,58 @@
 # 📝 Register User Microservice (users-auth)
 
-Este microservicio permite registrar nuevos usuarios en el sistema de **My Pet Host**. Es responsable de validar, encriptar y almacenar usuarios en la base de datos.
+This microservice allows the registration of new users in the **My Pet Host** system. It is responsible for validating, encrypting, and storing users in the database.
 
 ---
 
-## 🚀 Tecnologías
+## 🚀 Technologies
 
-- **Lenguaje:** Python 3.10
+- **Language:** Python 3.10
 - **Framework:** FastAPI
-- **Base de datos:** PostgreSQL
-- **Hashing:** bcrypt para contraseñas
-- **Validación:** Pydantic
-- **Docker:** Para despliegue y portabilidad
+- **Database:** PostgreSQL
+- **Hashing:** bcrypt for passwords
+- **Validation:** Pydantic
+- **Docker:** For deployment and portability
 
 ---
 
-## 📡 Estilo de arquitectura
+## 📡 Architecture Style
 
-- **Tipo de API:** RESTful
-- **Estilo arquitectónico:** Microservicios
-- **Comunicación:** HTTP 
-- **Endpoint expuesto:** `/api/users/register` (POST)
-
----
-
-## 🏗️ Arquitectura interna
-
-- **Patrón de arquitectura:** Separación por capas (n-capas)
-  - **Rutas (API Router):** Define los endpoints HTTP
-  - **Controladores:** Lógica de negocio y validaciones
-  - **Esquemas:** Validación de datos con Pydantic
-  - **Base de datos:** Acceso y conexión a PostgreSQL
+- **API Type:** RESTful
+- **Architectural Style:** Microservices
+- **Communication:** HTTP 
+- **Exposed Endpoint:** `/api/users/register` (POST)
 
 ---
 
-## 🧩 Patrones de diseño aplicados
+## 🏗️ Internal Architecture
 
-- **KISS:** Código simple y directo, fácil de mantener.
-- **DRY:** Reutilización de lógica y utilidades comunes.
-- **SOLID:** Separación de responsabilidades en rutas, controladores y utilidades.
-- **YAGNI:** Solo se implementa lo necesario para el registro de usuario.
-
----
-
-## 🔐 Seguridad
-
-- **Hashing:** Contraseñas almacenadas y comparadas usando bcrypt.
-- **Validaciones:** Contraseña fuerte (mínimo 8 caracteres, mayúscula, minúscula, número y carácter especial).
-- **CORS:** Configurable con FastAPI Middleware (agregar según necesidad del frontend).
+- **Architecture Pattern:** Layered pattern (n-layer)
+  - **Routes (API Router):** Defines the HTTP endpoints
+  - **Controllers:** Business logic and validations
+  - **Schemas:** Data validation with Pydantic
+  - **Database:** Access and connection to PostgreSQL
 
 ---
 
-## 📦 Estructura del proyecto
+## 🧩 Applied Design Patterns
+
+- **KISS:** Simple and direct code, easy to maintain.
+- **DRY:** Reuse of common logic and utilities.
+- **SOLID:** Separation of responsibilities in routes, controllers, and utilities.
+- **YAGNI:** Only implement what is necessary for user registration.
+
+---
+
+## 🔐 Security
+
+- **Hashing:** Passwords stored and compared using bcrypt.
+- **Validations:** Strong password (minimum 8 characters, uppercase, lowercase, number, and special character).
+- **CORS:** Configurable with FastAPI Middleware (add as needed for frontend).
+
+---
+
+## 📦 Project Structure
+
 
 ```
 register-user/
@@ -69,31 +70,31 @@ register-user/
 
 ---
 
-## ⚙️ Ejecución
+## ⚙️ Execution 
 
-**Modo local:**
+**Local mode :**
 ```bash
 python -m venv venv
-source venv/bin/activate   # o .\venv\Scripts\activate en Windows
+source venv/bin/activate   # o .\venv\Scripts\activate on Windows
 pip install -r requirements.txt
 uvicorn src.main:app --reload --port 3006
 ```
 
-**Docker local:**
+**Local Docker:**
 ```bash
 docker build -t register-user .
-docker run -p 3006:3006 --env-file .env register-user
+docker run -p 3006:3006 register-user
 ```
 
 **DockerHub:**
 ```bash
 docker pull alexmpz/register-user-service:qa
-docker run -d -p 3006:3006 --env-file .env alexmpz/register-user-service:qa
+docker run -d -p 3006:3006 alexmpz/register-user-service:qa
 ```
 
 ---
 
-## 🛠️ Endpoint principal
+## 🛠️ Main endpoint
 
 - `POST /api/users/register`
 
@@ -101,7 +102,7 @@ POST http://3.214.168.136:8000/api/users/register
 
 HEADERS     Content-Type      application/json
 
-**Body ejemplo:**
+**Body example:**
 ```json
 {
   "username": "johndoe",
@@ -111,14 +112,14 @@ HEADERS     Content-Type      application/json
 }
 ```
 
-**Validaciones realizadas:**
-- Mínimo 8 caracteres
-- Al menos una mayúscula
-- Al menos una minúscula
-- Al menos un número
-- Al menos un carácter especial (!@#$...)
+**Validations performed:**
+- Minimum 8 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+- At least one special character (!@#$...)
 
-**Respuesta Exitosa (201):**
+**Succesfull response (201):**
 ```json
 {
   "message": "✅ User registered successfully",
@@ -131,23 +132,23 @@ HEADERS     Content-Type      application/json
 }
 ```
 
-| Código | Motivo                                     |
-| ------ | ------------------------------------------ |
-| 400    | Contraseña débil                           |
-| 409    | Usuario con ese email o username ya existe |
-| 422    | Formato inválido en los datos              |
-| 500    | Error interno del servidor                 |
+| Código | Motivo                                           |
+| ------ | -----------------------------------------------  |
+| 400    | Weak password                                    |
+| 409    | User with that email or username already exists  |
+| 422    | Invalid data format                              |
+| 500    | Internal server error                            |
 
 **Swagger:**  
 http://3.223.253.161:3006/docs
 
 ---
 
-## 📚 Notas
+## 📚 Notes
 
-- Arquitectura desacoplada, cada microservicio es independiente.
-- El patrón n-capas facilita el mantenimiento y escalabilidad.
-- CORS puede configurarse según el origen de tu frontend.
-- Cumple con principios KISS, DRY, SOLID y YAGNI para un código limpio y mantenible.
+- Decoupled architecture, each microservice is independent.
+- The n-layer pattern facilitates maintenance and scalability.
+- CORS can be configured according to the origin of your frontend.
+- Complies with KISS, DRY, SOLID, and YAGNI principles for clean and maintainable code.
 
 ---

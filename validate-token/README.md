@@ -1,56 +1,58 @@
 # 🛡️ Validate Token Microservice (users-auth)
 
-Este microservicio permite validar tokens JWT para asegurar el acceso autenticado a los recursos del sistema **My Pet Host**.
+This microservice validates JWT tokens to ensure authenticated access to the resources of the **My Pet Host** system.
 
 ---
 
-## 🚀 Tecnologías
+## 🚀 Technologies
 
-- **Lenguaje:** Python 3.10
+- **Language:** Python 3.10
 - **Framework:** FastAPI
-- **Base de datos:** PostgreSQL 
-- **Autenticación:** JWT (JSON Web Token) usando PyJWT
-- **Validación:** Pydantic
-- **Docker:** Para despliegue y portabilidad
+- **Database:** PostgreSQL 
+- **Authentication:** JWT (JSON Web Token) using PyJWT
+- **Validation:** Pydantic
+- **Docker:** For deployment and portability
 
 ---
 
-## 📡 Estilo de arquitectura
+## 📡 Architecture Style
 
-- **Tipo de API:** RESTful
-- **Estilo arquitectónico:** Microservicios
-- **Comunicación:** HTTP
-- **Endpoint expuesto:** `/api/auth/validate-token` (GET)
-
----
-
-## 🏗️ Arquitectura interna
-
-- **Patrón de arquitectura:** Separación por capas (n-capas)
-  - **Rutas (API Router):** Define los endpoints HTTP
-  - **Controladores:** Lógica de validación de token
-  - **Esquemas:** Validación de datos con Pydantic
-  - **Utilidades:** Manejo y decodificación de JWT
+- **API Type:** RESTful
+- **Architectural Style:** Microservices
+- **Communication:** HTTP
+- **Exposed Endpoint:** `/api/auth/validate-token` (GET)
 
 ---
 
-## 🧩 Patrones de diseño aplicados
+## 🏗️ Internal Architecture
 
-- **KISS:** Código simple y directo, fácil de mantener.
-- **DRY:** Reutilización de lógica y utilidades comunes.
-- **SOLID:** Separación de responsabilidades en rutas, controladores y utilidades.
-- **YAGNI:** Solo se implementa lo necesario para la validación de token.
-
----
-
-## 🔐 Seguridad
-
-- **JWT:** Se valida el token en cada petición protegida, extrayendo el user_id y verificando su validez y expiración.
-- **CORS:** Configurable con FastAPI Middleware (agregar según necesidad del frontend).
+- **Architecture Pattern:** Layered pattern (n-layer)
+  - **Routes (API Router):** Defines the HTTP endpoints
+  - **Controllers:** Token validation logic
+  - **Schemas:** Data validation with Pydantic
+  - **Utilities:** JWT handling and decoding
 
 ---
 
-## 📦 Estructura del proyecto
+## 🧩 Applied Design Patterns
+
+- **KISS:** Simple and direct code, easy to maintain.
+- **DRY:** Reuse of common logic and utilities.
+- **SOLID:** Separation of responsibilities in routes, controllers, and utilities.
+- **YAGNI:** Only implement what is necessary for token validation.
+
+---
+
+## 🔐 Security
+
+- **JWT:** The token is validated on each protected request, extracting the user_id and verifying its validity and expiration.
+- **CORS:** Configurable with FastAPI Middleware (add as needed for frontend).
+
+---
+
+## 📦 Project Structure
+
+
 
 ```
 validate-token/
@@ -68,12 +70,12 @@ validate-token/
 
 ---
 
-## ⚙️ Ejecución
+## ⚙️ Execution
 
 **Modo local:**
 ```bash
 python -m venv venv
-source venv/bin/activate   # o .\venv\Scripts\activate en Windows
+source venv/bin/activate   # o .\venv\Scripts\activate on Windows
 pip install -r requirements.txt
 uvicorn src.main:app --reload --port 3010
 ```
@@ -86,7 +88,7 @@ docker run -p 3010:3010 --env-file .env validate-token
 
 ---
 
-## 🛠️ Endpoint principal
+## 🛠️ Main endpoint
 
 - `GET /api/auth/validate-token`
 
@@ -110,19 +112,19 @@ Authorization: Bearer <token>
 
 | Código | Motivo                        |
 | ------ | ----------------------------- |
-| 401    | Token inválido o expirado     |
-| 422    | Formato inválido en el token  |
+| 401    | Invalid or expired token      |
+| 422    | invalid format in token       |
 
 **Swagger:**  
 http://3.223.253.161:3008/docs
 
 ---
 
-## 📚 Notas
+## 📚 Notes
 
-- Arquitectura desacoplada, cada microservicio es independiente.
-- El patrón n-capas facilita el mantenimiento y escalabilidad.
-- CORS puede configurarse según el origen de tu frontend.
-- Cumple con principios KISS, DRY, SOLID y YAGNI para un código limpio y mantenible.
+- Decoupled architecture, each microservice is independent.
+- The n-layer pattern facilitates maintenance and scalability.
+- CORS can be configured according to the origin of your frontend.
+- Complies with KISS, DRY, SOLID, and YAGNI principles for clean and maintainable code.
 
 ---

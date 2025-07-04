@@ -1,22 +1,22 @@
 # Dockerfile
 FROM python:3.10-slim
 
-# Evita problemas con pyc
+# Avoiding problems with pyc
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Establecer directorio de trabajo
+# Set working directory
 WORKDIR /app
 
-# Instalar dependencias
+# Install system dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto de archivos del microservicio
+# copy project files    
 COPY . .
 
-# Exponer puerto (opcional - solo informativo)
+# Expose the port the app runs on
 EXPOSE 3007
 
-# Ejecutar FastAPI con Uvicorn
+# execute the application
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "3007"]

@@ -1,36 +1,37 @@
 # 🔐 Login User Microservice – users-auth
 
-Permite a los usuarios autenticarse, generando y validando tokens JWT para el acceso seguro a los recursos del sistema.
+Allows users to authenticate by generating and validating JWT tokens for secure access to system resources.
 
 ---
 
-## 🚀 Tecnologías
+## 🚀 Technologies
 
-- **Lenguaje:** Python 3.10
+- **Language:** Python 3.10
 - **Framework:** FastAPI
-- **Base de datos:** PostgreSQL
-- **Autenticación:** JWT (JSON Web Token) usando PyJWT
-- **Hashing:** bcrypt para contraseñas
-- **HTTP Client:** httpx (para comunicación con otros microservicios)
-- **CORS:** Configurado con FastAPI Middleware
+- **Database:** PostgreSQL
+- **Authentication:** JWT (JSON Web Token) using PyJWT
+- **Hashing:** bcrypt for passwords
+- **HTTP Client:** httpx (for communication with other microservices)
+- **CORS:** Configured with FastAPI Middleware
 
 ---
 
-## 📡 Estilo de arquitectura
+## 📡 Architecture Style
 
-- **Tipo de API:** RESTful
-- **Estilo arquitectónico:** Microservicios
-- **Comunicación:** HTTP 
-- **Endpoints expuestos:**  
+- **API Type:** RESTful
+- **Architectural Style:** Microservices
+- **Communication:** HTTP
+- **Exposed Endpoints:**  
   - `/api/auth/login` (POST)  
   - `/api/auth/validate-token` (GET)
 
   POST http://3.214.168.136:8000/api/users/login 
 
   BODY
+```json
 {
   "username_or_email": "alexadmin@hotmail.com",
-  "password": "EJEMPLO!"
+  "password": "EXAMPLE!"
 }
 
 GET http://3.214.168.136:8000/api/users/validate-token
@@ -39,36 +40,35 @@ HEADERS :  Authorization  Bearer  token
 
 ---
 
-## 🏗️ Arquitectura interna
+## 🏗️ Internal architecture
 
-- **Patrón de arquitectura:** Separación por capas (n-capas)
-  - **Rutas (API Router):** Define los endpoints HTTP
-  - **Controladores:** Lógica de negocio
-  - **Esquemas:** Validación de datos con Pydantic
-  - **Base de datos:** Acceso y conexión
-  - **Utilidades:** Manejo de JWT
-  - **Configuración:** Variables de entorno
-
----
-
-## 🧩 Patrones de diseño aplicados
-
-- **KISS:** Código simple y directo, fácil de mantener.
-- **DRY:** Reutilización de lógica y utilidades comunes.
-- **SOLID:** Separación de responsabilidades en rutas, controladores y utilidades.
-- **YAGNI:** Solo se implementa lo necesario para el login y validación de token.
+- **Architecture pattern:** Separation by layers (n-layers)
+  - **Routes (API Router):** Defines HTTP endpoints
+  - **Controllers:** Business logic
+  - **Schemas:** Data validation with Pydantic
+  - **Database:** Access and connection
+  - **Utilities:** JWT handling
+  - **Configuration:** Environment variables
 
 ---
 
-## 🔐 Seguridad
+## 🧩 Applied design patterns
 
-- **JWT:** Se genera y valida el token en cada autenticación, extrayendo el user_id del payload.
-- **CORS:** Permite solicitudes desde cualquier origen (`allow_origins=["*"]`), configurable para producción.
-- **Hashing:** Contraseñas almacenadas y comparadas usando bcrypt.
+- **KISS:** Simple and straightforward code, easy to maintain.
+- **DRY:** Reuse of common logic and utilities.
+- **SOLID:** Separation of responsibilities in routes, controllers, and utilities.
+- **YAGNI:** Only what is necessary for login and token validation is implemented.
+
+---
+## 🔐 Security
+
+- **JWT:** The token is generated and validated during each authentication, extracting the user_id from the payload.
+- **CORS:** Allows requests from any origin (`allow_origins=[“*”]`), configurable for production.
+- **Hashing:** Passwords stored and compared using bcrypt.
 
 ---
 
-## 📦 Estructura del proyecto
+## 📦 Project structure
 
 ```
 login-user/
@@ -88,40 +88,41 @@ login-user/
 
 ---
 
-## ⚙️ Ejecución
+## ⚙️ Execution
 
 **Modo local:**
 ```bash
 uvicorn src.main:app --reload --port 3008
 ```
 
-**Docker local:**
+**Local Docker:**
 ```bash
 docker build -t login-user .
-docker run -p 3008:3008 --env-file .env login-user
+docker run -p 3008:3008  login-user
 ```
 
 ---
 
-## 🛠️ Endpoints principales
+## 🛠️ Main endpoints
 
 - `POST /api/users/login`  
-  Autentica al usuario y retorna un JWT.
+  Authenticates the user and returns a JWT.
 
 - `GET /api/users/validate-token`  
-  Valida el JWT enviado en el header Authorization.
+  Validates the JWT sent in the Authorization header.
+
+
 
 **Swagger:**  
 http://3.223.253.161:3007/docs 
 http://3.223.253.161:3008/docs 
 ---
 
-## 📚 Notas
+## 📚 Notes
 
-- Arquitectura desacoplada, cada microservicio es independiente.
-- El patrón n-capas facilita el mantenimiento y escalabilidad.
-- JWT asegura que solo usuarios autenticados puedan acceder a recursos protegidos.
-- CORS abierto para desarrollo, restringir en producción.
-- Cumple con principios KISS, DRY, SOLID y YAGNI para un código limpio y mantenible.
-
+- Decoupled architecture, each microservice is independent.
+- The n-layer pattern facilitates maintenance and scalability.
+- JWT ensures that only authenticated users can access protected resources.
+- CORS open for development, restrict in production.
+- Complies with KISS, DRY, SOLID, and YAGNI principles for clean and maintainable code.
 ---

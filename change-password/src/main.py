@@ -13,16 +13,16 @@ app = FastAPI(
 # CORS Middleware (si usas frontend como React)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Reemplaza con tu frontend origin en producción
+    allow_origins=["*"],  # 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Incluir las rutas
+# Include routes
 app.include_router(users_routes.router)
 
-# Ruta raíz de prueba
+# test
 @app.get("/")
 def root():
     return {"message": "✅ Change Password Service is running!"}

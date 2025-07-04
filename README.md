@@ -1,103 +1,105 @@
 # 👤 Users-Auth Domain – My Pet Host
 
-El dominio **users-auth** gestiona la autenticación, autorización y administración de usuarios en el ecosistema de **My Pet Host**. Está compuesto por microservicios independientes, cada uno con una responsabilidad clara y bien definida.
+The **users-auth** domain manages authentication, authorization, and user management within the **My Pet Host** ecosystem. It consists of independent microservices, each with a clear and well-defined responsibility.
 
 ---
 
-## 🧩 Microservicios incluidos
+## 🧩 Included Microservices
 
-- **register-user:** Registro y validación de nuevos usuarios.
-- **login-user:** Autenticación y generación de tokens JWT.
-- **change-password:** Cambio seguro de contraseña para usuarios autenticados.
-- **validate-token:** Validación y decodificación de tokens JWT.
+- **register-user:** Registration and validation of new users.
+- **login-user:** Authentication and generation of JWT tokens.
+- **change-password:** Secure password change for authenticated users.
+- **validate-token:** Validation and decoding of JWT tokens.
 
 ---
 
-## 🚀 Tecnologías principales
+## 🚀 Main Technologies
 
-- **Lenguaje:** Python 3.10
+- **Language:** Python 3.10
 - **Framework:** FastAPI
-- **Base de datos:** PostgreSQL
-- **Autenticación:** JWT (JSON Web Token) usando PyJWT
-- **Hashing:** bcrypt para contraseñas
-- **Validación:** Pydantic
-- **HTTP Client:** httpx (para comunicación interna)
-- **Docker:** Para despliegue y portabilidad
-- **CORS:** Configurable con FastAPI Middleware
+- **Database:** PostgreSQL
+- **Authentication:** JWT (JSON Web Token) using PyJWT
+- **Hashing:** bcrypt for passwords
+- **Validation:** Pydantic
+- **HTTP Client:** httpx (for internal communication)
+- **Docker:** For deployment and portability
+- **CORS:** Configurable with FastAPI Middleware
 
 ---
 
-## 📡 Estilo de arquitectura
+## 📡 Architecture Style
 
-- **Tipo de API:** RESTful
-- **Estilo arquitectónico:** Microservicios
-- **Comunicación:** HTTP 
-- **Separación de responsabilidades:** Cada microservicio es autónomo y desacoplado.
-
----
-
-## 🏗️ Arquitectura interna
-
-- **Patrón de arquitectura:** Separación por capas (n-capas)
-  - **Rutas (API Router):** Define los endpoints HTTP
-  - **Controladores:** Lógica de negocio y validaciones
-  - **Esquemas:** Validación de datos con Pydantic
-  - **Base de datos:** Acceso y conexión a PostgreSQL
-  - **Utilidades:** Manejo de JWT, hashing, dependencias
-  - **Configuración:** Variables de entorno
+- **API Type:** RESTful
+- **Architectural Style:** Microservices
+- **Communication:** HTTP 
+- **Responsibility Separation:** Each microservice is autonomous and decoupled.
 
 ---
 
-## 🧩 Patrones de diseño aplicados
+## 🏗️ Internal Architecture
 
-- **KISS:** Código simple y directo, fácil de mantener.
-- **DRY:** Reutilización de lógica y utilidades comunes.
-- **SOLID:** Separación de responsabilidades en rutas, controladores y utilidades.
-- **YAGNI:** Solo se implementa lo necesario para cada funcionalidad.
-
----
-
-## 🔐 Seguridad
-
-- **JWT:** Autenticación y autorización basada en tokens.
-- **Hashing:** Contraseñas almacenadas y comparadas usando bcrypt.
-- **Validaciones:** Contraseñas fuertes y datos de entrada validados.
-- **CORS:** Configurable según el origen del frontend.
+- **Architecture Pattern:** Layered pattern (n-layer)
+  - **Routes (API Router):** Defines the HTTP endpoints
+  - **Controllers:** Business logic and validations
+  - **Schemas:** Data validation with Pydantic
+  - **Database:** Access and connection to PostgreSQL
+  - **Utilities:** JWT handling, hashing, dependencies
+  - **Configuration:** Environment variables
 
 ---
 
-## 📦 Estructura general del dominio
+## 🧩 Applied Design Patterns
 
-```
-users-auth/
-├── register-user/
-├── login-user/
-├── change-password/
-├── validate-token/
-└── README.md
-```
-
-Cada microservicio contiene su propio código fuente, dependencias, configuración y documentación.
+- **KISS:** Simple and direct code, easy to maintain.
+- **DRY:** Reuse of common logic and utilities.
+- **SOLID:** Separation of responsibilities in routes, controllers, and utilities.
+- **YAGNI:** Only implement what is necessary for each functionality.
 
 ---
 
-## ⚙️ Ejecución y despliegue
+## 🔐 Security
 
-Cada microservicio puede ejecutarse y desplegarse de forma independiente, ya sea localmente o en contenedores Docker. Consulta el README de cada microservicio para instrucciones detalladas.
+- **JWT:** Authentication and authorization based on tokens.
+- **Hashing:** Passwords stored and compared using bcrypt.
+- **Validations:** Strong passwords and validated input data.
+- **CORS:** Configurable according to the frontend origin.
 
 ---
-:
 
-🐳 Despliegue con Docker Compose
-Para levantar todos los microservicios del dominio users-auth junto con la base de datos, utiliza Docker Compose.
-Esto permite iniciar y gestionar todos los servicios con un solo comando, facilitando el desarrollo y despliegue local o en servidores.
+## 📦 General Domain Structure
+
+
+
+  ```
+  users-auth/
+  ├── register-user/
+  ├── login-user/
+  ├── change-password/
+  ├── validate-token/
+  └── README.md
+  ```
+
+  Each microservice contains its own source code, dependencies, configuration, and documentation.
+
+  ---
+
+  ## ⚙️ Execution and deployment
+
+Each microservice can be executed and deployed independently, either locally or in Docker containers. See the README for each microservice for detailed instructions.
+
+  ---
+  :
+
+  🐳 Deployment with Docker Compose
+  To launch all microservices in the users-auth domain along with the database, use Docker Compose.
+  This allows you to start and manage all services with a single command, facilitating development and deployment locally or on servers.
 
 docker-compose up --build
 
-## 📚 Notas
+  ## 📚 Notes
 
-- La arquitectura de microservicios permite escalar, mantener y desplegar cada componente de forma independiente.
-- El dominio users-auth es fundamental para la seguridad y gestión de usuarios en **My Pet Host**.
-- Cumple con principios de buenas prácticas de ingeniería de software para garantizar un código limpio, seguro y mantenible.
+- The microservice architecture allows each component to be scaled, maintained, and deployed independently.
+- The users-auth domain is essential for security and user management in **My Pet Host**.
+- It complies with software engineering best practices to ensure clean, secure, and maintainable code.
 
 ---

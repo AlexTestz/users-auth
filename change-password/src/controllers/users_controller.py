@@ -10,7 +10,7 @@ def change_password(user_id: int, data: ChangePasswordRequest):
         conn = get_connection()
         cur = conn.cursor()
 
-        # Verificar existencia
+     # Verify existence
         cur.execute("SELECT password FROM users WHERE id = %s", (user_id,))
         result = cur.fetchone()
         if not result:
@@ -18,14 +18,14 @@ def change_password(user_id: int, data: ChangePasswordRequest):
 
         stored_password = result['password']
 
-        # Verificar contraseña actual
+        # Verify current password
         if not bcrypt.checkpw(data.old_password.encode('utf-8'), stored_password.encode('utf-8')):
             raise HTTPException(status_code=401, detail="Old password is incorrect")
 
-        # Hashear nueva contraseña
+        # Reset new password
         new_hashed = bcrypt.hashpw(data.new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        # Actualizar
+        # Update password in the database
         cur.execute("UPDATE users SET password = %s WHERE id = %s", (new_hashed, user_id))
         conn.commit()
 
