@@ -1,0 +1,38 @@
+version: "3.9" #asd
+
+services:
+  register-user:
+    build:
+      context: ./register-user
+    container_name: register-user-service
+    ports:
+      - "3006:3006"
+    env_file:
+      - ./register-user/.env
+
+  login-user:
+    build:
+      context: ./login-user
+    container_name: login-user-service
+    ports:
+      - "3007:3007"
+    env_file:
+      - ./login-user/.env
+
+  validate-token:
+    build:
+      context: ./validate-token
+    container_name: validate-token-service
+    ports:
+      - "3008:3008"
+    env_file:
+      - ./validate-token/.env
+
+  change-password:
+    build:
+      context: ./change-password
+    container_name: change-password-service
+    ports:
+      - "3009:3009"
+    env_file:
+      - ./change-password/.env
