@@ -3,14 +3,14 @@ name: Build and Deploy to EC2
 on:
   pull_request:
     branches:
-      - production
+      - main
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Paso 1: Checkout code
+    # Paso 1: Checkout code.
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -46,7 +46,7 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
-          #  Stop and delete old containers if they exist
+          # Stop and delete old containers if they exist
           docker stop $(docker ps -aq)
           docker rm $(docker ps -aq)
           
